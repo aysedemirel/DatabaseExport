@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
   /**
    * Connect to the test.db database
    * 
@@ -34,7 +35,7 @@ public class Main {
    */
   public void selectAll() {
     String sql =
-        "SELECT EmployeeId, Title, LastName, FirstName FROM employees where title='Sales Support Agent'";
+        "SELECT EmployeeId, Title, LastName, FirstName FROM employees where title != 'Sales Support Agent'";
 
     try (Connection conn = this.connect();
         Statement stmt = conn.createStatement();
@@ -56,12 +57,13 @@ public class Main {
     List<String> resultSetArray = new ArrayList<>();
     try {
       int numCols = rs.getMetaData().getColumnCount();
+      // Add header
+      resultSetArray.add("EmployeeId\tTitle\tLastName\tFirstName");
+      // Add results
       while (rs.next()) {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 1; i <= numCols; i++) {
-          sb.append(String.format(String.valueOf(rs.getString(i))) + " ");
-
+          sb.append(String.format(String.valueOf(rs.getString(i))) + "\t");
         }
         resultSetArray.add(sb.toString());
 
